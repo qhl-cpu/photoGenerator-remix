@@ -1,5 +1,5 @@
 import type { MetaFunction } from "@remix-run/node";
-
+import {Link} from "@remix-run/react";
 export const meta: MetaFunction = () => {
   return [
     { title: "New Remix App" },
@@ -10,16 +10,10 @@ export const meta: MetaFunction = () => {
 export default function Index() {
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-      <h1>Welcome to Remix</h1>
+      <h1 className="bg-black">Welcome to Davis&apos; Remix Projects</h1>
       <ul>
         <li>
-          <a
-            target="_blank"
-            href="https://remix.run/tutorials/blog"
-            rel="noreferrer"
-          >
-            15m Quickstart Blog Tutorial
-          </a>
+          <Link to={`/photoGenerator`}>Photo Generator</Link>
         </li>
         <li>
           <a
