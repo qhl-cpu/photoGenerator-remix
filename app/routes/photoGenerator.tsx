@@ -17,9 +17,7 @@ const cachePhotos = (photos: any[]) => {
  * @return {null} if no photos were found.
  */
 const getCachedPhotos = () => {
-  console.log(1)
   const cachedPhotos = JSON.parse(localStorage.getItem('photos') || '[]');
-  console.log(cachedPhotos)
   return cachedPhotos && cachedPhotos.length > 0 ? cachedPhotos : null;
 };
 
