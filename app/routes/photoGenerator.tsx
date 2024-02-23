@@ -1,12 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
 import PhotoItem from '../components/PhotoItem';
-// import { Tooltip } from 'react-tooltip';
+import { Tooltip } from 'react-tooltip';
 import confetti from "canvas-confetti";
+import initialPhotos from '../data/photoGenerator.json';
 
 const PHOTO_URL = 'http://jsonplaceholder.typicode.com/photos';
 
 // Cache photos in local storage
-const cachePhotos = (photos) => {
+const cachePhotos = (photos: any[]) => {
   localStorage.setItem('photos', JSON.stringify(photos));
 };
 
@@ -16,7 +17,9 @@ const cachePhotos = (photos) => {
  * @return {null} if no photos were found.
  */
 const getCachedPhotos = () => {
-  const cachedPhotos = JSON.parse(localStorage.getItem('photos'));
+  console.log(1)
+  const cachedPhotos = JSON.parse(localStorage.getItem('photos') || '[]');
+  console.log(cachedPhotos)
   return cachedPhotos && cachedPhotos.length > 0 ? cachedPhotos : null;
 };
 
@@ -26,8 +29,8 @@ const getCachedPhotos = () => {
  * @param {Array} array - The array to shuffle.
  * @return {Array} The shuffled array.
  */
-const randomizeArray = (array) => {
-  const randomize = (arr, index) => {
+const randomizeArray = (array: string | any[]): any[]  => {
+  const randomize = (arr: any[], index: number): any[] => {
     if (index === 0) return arr;
     const randomIndex = Math.floor(Math.random() * (index + 1));
     [arr[index], arr[randomIndex]] = [arr[randomIndex], arr[index]];
@@ -41,13 +44,13 @@ const randomizeArray = (array) => {
  * 
  * @return {Array} An array contains the generated results.
  */
-const generateUniqueIds = () => {
-  const initialSet = new Set();
+function generateUniqueIds (): string[]  {
+  const initialSet: Set<string> = new Set();
   while (initialSet.size < 50) {
-    const randomNumber = Math.floor(Math.random() * 5000) + 1;
+    const randomNumber: string = Math.floor(Math.random() * 5000) + 1 + "";
     initialSet.add(randomNumber);
   }
-  const initialArray = Array.from(initialSet);
+  const initialArray: string[] = Array.from(initialSet);
   return initialArray;
 }
 
@@ -59,7 +62,7 @@ const generateUniqueIds = () => {
  * @return {Promise<Object>} A promise that resolves to the JSON response from the fetch request if successful.
  *                           If all retries fail, the function will throw an error.
  */
-const fetchWithRetry = async (url, retries, delay) => {
+const fetchWithRetry = async (url: string | URL | Request, retries: number, delay: number | undefined) => {
   for (let i = 0; i <= retries; i++) {
     try {
       const response = await fetch(url);
@@ -76,7 +79,7 @@ const fetchWithRetry = async (url, retries, delay) => {
  * add confetti to the button's location
  * @param {Ref} buttonRef - The ref of a button
  */
-const triggerConfetti = (buttonRef) => {
+const triggerConfetti = (buttonRef: React.RefObject<HTMLButtonElement>) => {
   if (buttonRef.current) {
     const rect = buttonRef.current.getBoundingClientRect();
     const originX = rect.left + rect.width / 2;
@@ -91,11 +94,11 @@ const triggerConfetti = (buttonRef) => {
     });
   }
 };
-
-const photoGenerator = () => {
-  const [photos, setPhotos] = useState([]);
-  const [photoIds, setPhotoIds] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+interface Photo { albumId: number; id: number; title: string; url: string; thumbnailUrl: string; }
+const PhotoGenerator = () => {
+  const [photos, setPhotos] = useState<Photo[]>(initialPhotos as Photo[]);
+  const [photoIds, setPhotoIds] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const shuffleRef = useRef(null);
   const regenerateRef = useRef(null);
 
@@ -116,6 +119,7 @@ const photoGenerator = () => {
     const cachedPhotos = getCachedPhotos();
     if (cachedPhotos) {
       setPhotos(cachedPhotos);
+      setIsLoading(false);
     } else {
       setPhotoIds(generateUniqueIds());
     }
@@ -123,7 +127,6 @@ const photoGenerator = () => {
 
   // Run fetchPhotos whenever photoIds changes
   useEffect(() => {
-    setIsLoading(true);
     if (photoIds.length > 0) {
       fetchPhotos();
     }
@@ -139,17 +142,18 @@ const photoGenerator = () => {
 
   // Event handler for regenerating photo IDs and fetching new photos
   const regeneratePhotos = () => {
+    setIsLoading(true);
     setPhotoIds(generateUniqueIds());
     triggerConfetti(regenerateRef);
   }
 
   return (
     <div className='flex flex-col justify-center items-center h-screen bg-gradient-to-br from-teal-500 via-blue-500 to-green-300'>
-      <div className='grid grid-flow-col grid-rows-2 grid-cols-none overflow-x-scroll overflow-y-hidden rounded-xl bg-white bg-opacity-30 border-[15px] border-transparent p-4 max-w-[80%]'>
+      <div className='grid grid-flow-col grid-rows-2 grid-cols-none overflow-x-scroll overflow-y-hidden rounded-xl bg-white bg-opacity-30 border-[15px] border-transparent p-4 w-[80%]'>
         {photos.map((photo, index) => {
           return (
             <div className='w-32 y-32 mx-2' key={"photoMap" + photo.id} >
-              {/* <Tooltip id={photo.id} place={index % 2 == 0 ? 'top' : 'bottom'} /> */}
+              <Tooltip id={photo.id+""} place={index % 2 == 0 ? 'top' : 'bottom'} />
               <PhotoItem photo={photo} isLoading={isLoading} />
             </div>
           )
@@ -179,4 +183,4 @@ const photoGenerator = () => {
   );
 }
 
-export default photoGenerator;
+export default PhotoGenerator;

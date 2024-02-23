@@ -10,7 +10,7 @@ export const meta: MetaFunction = () => {
 export default function Index() {
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-      <h1 className="bg-black">Welcome to Davis&apos; Remix Projects</h1>
+      <h1>Welcome to Davis&apos; Remix Projects</h1>
       <ul>
         <li>
           <Link to={`/photoGenerator`}>Photo Generator</Link>
