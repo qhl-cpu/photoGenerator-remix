@@ -1,14 +1,22 @@
 import PropTypes from "prop-types";
 
-const PhotoItem = ({ photo, isLoading }) => {
-  PhotoItem.propTypes = {
-    photo: PropTypes.object,
-    isLoading: PropTypes.bool
-  }
+
+export interface Photo { albumId: number; id: number; title: string; url: string; thumbnailUrl: string; }
+
+export type photoItemPropTypes = {
+  photo: Photo,
+  isLoading: boolean,
+}
+
+const PhotoItem = ({ photo, isLoading }: photoItemPropTypes) => {
+  // PhotoItem.propTypes = {
+  //   photo: PropTypes.object,
+  //   isLoading: PropTypes.bool
+  // }
 
   return (
     <div className="relative flex justify-center items-center my-4"
-      data-tooltip-id={photo.id} data-tooltip-content={photo.title}>
+      data-tooltip-id={photo.id+''} data-tooltip-content={photo.title}>
       {isLoading? 
         <div className="flex items-center justify-center w-32 h-32 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
           <div className="px-3 py-1 text-xs font-medium leading-none text-center text-blue-800 bg-blue-200 rounded-full animate-pulse dark:bg-blue-900 dark:text-blue-200">loading...</div>

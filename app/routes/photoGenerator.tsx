@@ -3,7 +3,7 @@ import PhotoItem from '../components/PhotoItem';
 import { Tooltip } from 'react-tooltip';
 import confetti from "canvas-confetti";
 import initialPhotos from '../data/photoGenerator.json';
-
+import {Photo} from '../components/PhotoItem';
 const PHOTO_URL = 'http://jsonplaceholder.typicode.com/photos';
 
 // Cache photos in local storage
@@ -92,7 +92,7 @@ const triggerConfetti = (buttonRef: React.RefObject<HTMLButtonElement>) => {
     });
   }
 };
-interface Photo { albumId: number; id: number; title: string; url: string; thumbnailUrl: string; }
+// interface Photo { albumId: number; id: number; title: string; url: string; thumbnailUrl: string; }
 const PhotoGenerator = () => {
   const [photos, setPhotos] = useState<Photo[]>(initialPhotos as Photo[]);
   const [photoIds, setPhotoIds] = useState<string[]>([]);
