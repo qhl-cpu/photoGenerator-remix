@@ -21,7 +21,6 @@ const quoteGenerator = () => {
 
     const openai = new OpenAI({ apiKey: data.environmentVariables.API_URL, dangerouslyAllowBrowser: true });
     const generateQuoteAndPic = async () => {
-      console.log("generateQuote")
       setIsLoading(true);
       const completion = await openai.chat.completions.create({
         messages: [{ role: "system", content: "generate a positive quote for me" }],
@@ -29,13 +28,10 @@ const quoteGenerator = () => {
       });
       completion.choices[0].message.content && setQuotes(completion.choices[0].message.content.toString());
 
-      console.log("choice: ");
-      console.log(completion.choices);
       await generatePicture();
     }
 
     const generatePicture = async () => {
-      console.log("generateQuotePicture")
       const response = await openai.images.generate({
         model: "dall-e-2",
         prompt: "provide me a picture without text that suit best for this quote " + quotes,
@@ -44,8 +40,6 @@ const quoteGenerator = () => {
       });
       response.data[0]?.url && setQuotesPicture(response.data[0].url);
       setIsLoading(false);
-      console.log("image: ")
-      console.log(response);
     }
 
     useEffect(()=> {
