@@ -19,7 +19,7 @@ const quoteGenerator = () => {
     const [quotesPicture, setQuotesPicture] = useState<string>('');
 
     const openai = new OpenAI({ apiKey: data.environmentVariables.API_URL, dangerouslyAllowBrowser: true });
-    const generateQuote = async () => {
+    const generateQuoteAndPic = async () => {
       console.log("generateQuote")
       const completion = await openai.chat.completions.create({
         messages: [{ role: "system", content: "generate a positive quote for me" }],
@@ -29,10 +29,10 @@ const quoteGenerator = () => {
 
       console.log("choice: ");
       console.log(completion.choices);
-      await generateQuotePicture();
+      await generatePicture();
     }
 
-    const generateQuotePicture = async () => {
+    const generatePicture = async () => {
       console.log("generateQuotePicture")
       const response = await openai.images.generate({
         model: "dall-e-2",
@@ -46,6 +46,10 @@ const quoteGenerator = () => {
       console.log(response);
     }
 
+    useEffect(()=> {
+      generateQuoteAndPic();
+    },[])
+
   return (
     <div className='flex flex-col justify-center items-center h-screen bg-gradient-to-br from-teal-500 via-blue-500 to-green-300'>
       <button ref={regenerateRef}
@@ -54,7 +58,7 @@ const quoteGenerator = () => {
             active:border-b-[0px]
             transition-all duration-150 [box-shadow:0_10px_0_0_#ffffff,5px_10px_0_0_#ffffff]
             border-b-[1px] border-blue-400'
-          onClick={generateQuote}>
+          onClick={generateQuoteAndPic}>
           Regenerate a Quote for the day.
       </button>
       <QuoteCard quotes={quotes} quotesPicture={quotesPicture}/>
