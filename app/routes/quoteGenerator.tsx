@@ -2,14 +2,23 @@ import { useState, useEffect, useRef } from 'react';
 
 import OpenAI from "openai";
 import { QuoteCard } from '~/components/QuoteCard';
+import { json } from '@remix-run/node';
+import { useLoaderData } from '@remix-run/react';
 
-const openai = new OpenAI({ apiKey: "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", dangerouslyAllowBrowser: true });
+export const loader = async () => {
+  const environmentVariables = {
+    API_URL: process.env.OPENAI_API_KEY,
+  };
+  return json({ environmentVariables });;
+};
 
 const quoteGenerator = () => {
+    const data: any = useLoaderData();
     const regenerateRef = useRef(null);
     const [quotes, setQuotes] = useState<string>('');
     const [quotesPicture, setQuotesPicture] = useState<string>('');
 
+    const openai = new OpenAI({ apiKey: data.environmentVariables.API_URL, dangerouslyAllowBrowser: true });
     const generateQuote = async () => {
       console.log("generateQuote")
       const completion = await openai.chat.completions.create({
@@ -49,7 +58,6 @@ const quoteGenerator = () => {
           Regenerate a Quote for the day.
       </button>
       <QuoteCard quotes={quotes} quotesPicture={quotesPicture}/>
-
     </div>
   );
 }
