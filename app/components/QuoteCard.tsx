@@ -1,16 +1,18 @@
 
 export type QuoteCardPropTypes = {
   quotes: string,
-  quotesPicture: string
+  quotesPicture: string,
+  isLoading: boolean,
 }
 
 export const QuoteCard = ({
   quotes,
-  quotesPicture
+  quotesPicture,
+  isLoading,
 }: QuoteCardPropTypes) => {  
   return (
     <div className="max-w-sm w-[90%] h-[65%] rounded overflow-hidden shadow-lg flex flex-col items-center bg-white bg-opacity-30 border-[15px] border-transparent">
-      {quotesPicture == ''? 
+      {isLoading? 
         <div className="flex items-center justify-center w-[230px] h-[230px] border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
           <div className="px-3 py-1 text-xs font-medium leading-none text-center text-blue-800 bg-blue-200 rounded-full animate-pulse dark:bg-blue-900 dark:text-blue-200">loading...</div>
         </div>

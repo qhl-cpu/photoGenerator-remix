@@ -17,10 +17,12 @@ const quoteGenerator = () => {
     const regenerateRef = useRef(null);
     const [quotes, setQuotes] = useState<string>('');
     const [quotesPicture, setQuotesPicture] = useState<string>('');
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const openai = new OpenAI({ apiKey: data.environmentVariables.API_URL, dangerouslyAllowBrowser: true });
     const generateQuoteAndPic = async () => {
       console.log("generateQuote")
+      setIsLoading(true);
       const completion = await openai.chat.completions.create({
         messages: [{ role: "system", content: "generate a positive quote for me" }],
         model: "gpt-3.5-turbo",
@@ -41,7 +43,7 @@ const quoteGenerator = () => {
         size: "1024x1024",
       });
       response.data[0]?.url && setQuotesPicture(response.data[0].url);
-
+      setIsLoading(false);
       console.log("image: ")
       console.log(response);
     }
@@ -61,7 +63,7 @@ const quoteGenerator = () => {
           onClick={generateQuoteAndPic}>
           Regenerate a Quote for the day.
       </button>
-      <QuoteCard quotes={quotes} quotesPicture={quotesPicture}/>
+      <QuoteCard quotes={quotes} quotesPicture={quotesPicture} isLoading={isLoading}/>
     </div>
   );
 }
