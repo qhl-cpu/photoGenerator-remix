@@ -9,10 +9,6 @@ export type photoItemPropTypes = {
 }
 
 const PhotoItem = ({ photo, isLoading }: photoItemPropTypes) => {
-  // PhotoItem.propTypes = {
-  //   photo: PropTypes.object,
-  //   isLoading: PropTypes.bool
-  // }
 
   return (
     <div className="relative flex justify-center items-center my-4"
