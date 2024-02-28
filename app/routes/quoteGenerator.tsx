@@ -34,7 +34,7 @@ const quoteGenerator = () => {
     const generatePicture = async () => {
       const response = await openai.images.generate({
         model: "dall-e-2",
-        prompt: "provide me a picture without text that suit best for this quote " + quotes,
+        prompt: "provide me a beautiful inspirational picture of scenery " + quotes,
         n: 1,
         size: "1024x1024",
       });

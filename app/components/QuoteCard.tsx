@@ -17,7 +17,7 @@ export const QuoteCard = ({
           <div className="px-3 py-1 text-xs font-medium leading-none text-center text-blue-800 bg-blue-200 rounded-full animate-pulse dark:bg-blue-900 dark:text-blue-200">loading...</div>
         </div>
         :
-      <img className="w-[230px] h-[230px] pt-2 h-[60%]" src={quotesPicture}/>
+      <img className="w-[230px] h-[230px] pt-2 " src={quotesPicture}/>
       }
       <div className="px-2 my-4  h-[30%] font-bold text-white text-xl">{quotes}</div>
       <div className="px-6 pt-4 h-[10%]">
