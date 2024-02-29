@@ -19,6 +19,9 @@ export default function Index() {
         <Link to={`/quoteGenerator`}>Quote Generator</Link>
         </li>
         <li>
+        <Link to={`/googleMap`}>Google Map</Link>
+        </li>
+        <li>
           <a target="_blank" href="https://remix.run/docs" rel="noreferrer">
             Remix Docs
           </a>
